@@ -7,10 +7,21 @@
 	header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
 	header('Access-Control-Allow-Headers: Content-Type, Content-Range, Content-Dispotition, Content-Description');
 	
-	$sql="select * from printer";
-	$query=mysqli_query($con,$sql) or die(mysqli_error());
+	$param=$_GET['param'];
+	$v=$_GET['v'];
+	
+	if($param=='')
+	{
+		$sql="select * from printer";
+	}else
+	if($param<>'')
+	{
+		$sql="select * from printer where $param like '%$v%'";
+	}
+
+	$query=mysqli_query($con,$sql);
 	$rest['printer']=array();
-	while($data=mysqli_fetch_array($query))
+	while($data=mysqli_fetch_array($query,MYSQLI_ASSOC))
 	{
 		$ft['id']=$data['id'];
 		$ft['nama']=$data['nama'];
